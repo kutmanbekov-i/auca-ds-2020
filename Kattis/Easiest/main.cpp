@@ -6,8 +6,6 @@ int sum_of_digits(int n);
 
 int main()
 {
-    // g++ main.cpp
-    // main < input.txt
     int n, sum;
     
     while (cin >> n and n != 0)
