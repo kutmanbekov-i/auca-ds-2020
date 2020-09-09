@@ -5,15 +5,13 @@ using namespace std;
 int main()
 {
     /* g++ -std=c++17 main.cpp*/ 
-    fstream file;
-    file.open("output.txt", ios::out);
+    // main < input.txt
 
-    streambuf* sb_file = file.rdbuf();
 
-    // Redirect cout to a file
-    cout.rdbuf(sb_file);
+    //cpp main.cpp > mainFull.cpp
 
+    //objdump -D -S main.o > mainAsmDump.asm
+
+    //objdump -x -s main.o > mainFullDump.txt
     cout << "Hello, C++ " << __cplusplus;
-
-    file.close();
 }
