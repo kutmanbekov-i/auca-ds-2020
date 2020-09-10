@@ -8,5 +8,5 @@ int main()
     getline(cin, s);
 
     //Thank you, Twilight, and farewell!
-    cout << "Thank you, " << s << ", and farewell!!";
+    cout << "Thank you, " << s << ", and farewell!";
 }
