@@ -5,21 +5,18 @@ using namespace std;
 int main()
 {
     int p, a, b, c, d, n;
-    double best = 0, dif = 0, piece1 = 0, piece2=0;
+    double dif = 0, max_dif = 0, piece = 0, piece2 = 0, curr_max = 0;
     scanf("%d %d %d %d %d %d", &p, &a, &b, &c, &d, &n);
 
-    /* price(k)=p⋅(sin(a⋅k+b)+cos(c⋅k+d)+2) */
-    for (int i = 1; i <= n; i++)
+    for (int k = 1; k <= n - 1; k++)
     {
-        piece1 = p * (sin(a * i + b) + cos(c * i + d) + 2);
-        for (int j = i + 1; j <= n; j++)
-        {
-            piece2 = p * (sin(a * j + b) + cos(c * j + d) + 2);
-
-            dif = piece1 - piece2;
-            if (dif > best)
-                best = dif;
-        }
+        piece = p * (sin(a * k + b) + cos(c * k + d) + 2);
+        piece2 = p * (sin(a * (k + 1) + b) + cos(c * (k + 1) + d) + 2);
+        
+        curr_max = max(piece, curr_max);
+        
+        dif = curr_max - piece2;
+        max_dif = max(dif, max_dif);
     }
-    printf("%.9f\n", best);
+    printf("%.9f\n", max_dif);
 }
