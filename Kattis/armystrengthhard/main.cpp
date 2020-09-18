@@ -27,16 +27,22 @@ int main() {
         sort(godzilla.begin(), godzilla.end());
         sort(mecha.begin(), mecha.end());
         
-        while( !godzilla.empty() and !mecha.empty() )
+        int g_ind = 0, m_ind = 0;
+        while( g_ind < g and m_ind < m )
         {
             
-            if ( godzilla[0] < mecha[0] )
-                godzilla.erase(godzilla.begin());
+            if ( godzilla[g_ind] < mecha[m_ind] )
+                ++g_ind;
             else
-                mecha.erase(mecha.begin());
+                ++m_ind;
             
         }
-        cout << ( mecha.empty() ? "Godzilla" : "MechaGodzilla" ) << "\n";
+        if (g_ind == g)
+            cout << "MechaGodzilla\n";
+        else if (m_ind == m)
+            cout << "Godzilla\n";
+        else
+            cout << "uncertain\n";
     }
     
 }
