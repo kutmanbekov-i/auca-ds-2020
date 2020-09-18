@@ -13,7 +13,7 @@ int main() {
         string first = to_string(max(a, b)) + to_string(min(a, b));
         string second = to_string(max(c, d)) + to_string(min(c, d));
         
-        if (first == second) cout << "Tie\n";
+        if (first == second) cout << "Tie.\n";
         
         else if (first[0] == '2' and first[1] == '1')
             printf("Player 1 wins.\n");
