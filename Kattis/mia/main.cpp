@@ -20,7 +20,7 @@ int main() {
         else if (second[0] == '2' and second[1] == '1')
             printf("Player 2 wins.\n");
         
-        else if (first[0] == first[1] and second[0] == second[0])
+        else if (first[0] == first[1] and second[0] == second[1])
         {
             printf("Player %d wins.\n", (1 ? first[0] > second[0] : 2));
         }
