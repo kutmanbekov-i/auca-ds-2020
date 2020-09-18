@@ -18,7 +18,6 @@ int main() {
             lena = temp.length();
             i++;
         }
-        cout << ++i << "\n";
+        cout << (s == "1" ? i : ++i) << "\n";
     }
-    
 }
