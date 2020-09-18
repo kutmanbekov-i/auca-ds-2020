@@ -4,7 +4,7 @@ using namespace std;
 
 int main() {
     
-    int a, b, c, d, game = 0;
+    int a, b, c, d;
     
     while(cin >> a >> b >> c >> d)
     {
@@ -22,7 +22,7 @@ int main() {
         
         else if (first[0] == first[1] and second[0] == second[1])
         {
-            printf("Player %d wins.\n", (1 ? first[0] > second[0] : 2));
+            printf("Player %d wins.\n", first[0] > second[0] ? 1 : 2);
         }
         else if (first[0] == first[1]) {
             printf("Player 1 wins.\n");
@@ -31,7 +31,7 @@ int main() {
             printf("Player 2 wins.\n");
         }
         else {
-            printf("Player %d wins.\n", (1 ? first[0] > second[0] : 2));
+            printf("Player %d wins.\n", first[0] > second[0] ? 1 : 2);
         }
         
     }
