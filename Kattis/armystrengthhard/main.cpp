@@ -15,31 +15,34 @@ int main() {
         cin >> g >> m;
         
         for(int i = 0; i < g; i++) {
-            cin >> g;
-            godzilla.push_back(g);
+            // Мои субмишуны не проходили потому что я
+            // снова считывал здесь г вместо икса и в том цикле аналогично, вот я даун хахахх
+            int x;
+            cin >> x;
+            godzilla.push_back(x);
         }
             
         for(int i = 0; i < m; i++) {
-            cin >> m;
-            mecha.push_back(m);
+            int x;
+            cin >> x;
+            mecha.push_back(x);
         }
         
         sort(godzilla.begin(), godzilla.end());
         sort(mecha.begin(), mecha.end());
         
-        int g_ind = 0, m_ind = 0;
-        while( g_ind < g and m_ind < m )
+        while( !godzilla.empty() and !mecha.empty() )
         {
             
-            if ( godzilla[g_ind] < mecha[m_ind] )
-                ++g_ind;
+            if ( godzilla[0] < mecha[0] )
+                godzilla.erase(godzilla.begin());
             else
-                ++m_ind;
+                mecha.erase(mecha.begin());
             
         }
-        if (g_ind == g)
+        if (godzilla.empty())
             cout << "MechaGodzilla\n";
-        else if (m_ind == m)
+        else if (mecha.empty())
             cout << "Godzilla\n";
         else
             cout << "uncertain\n";
