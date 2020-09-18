@@ -15,8 +15,6 @@ int main() {
         cin >> g >> m;
         
         for(int i = 0; i < g; i++) {
-            // Мои субмишуны не проходили потому что я
-            // снова считывал здесь г вместо икса и в том цикле аналогично, вот я даун хахахх
             int x;
             cin >> x;
             godzilla.push_back(x);
@@ -31,18 +29,25 @@ int main() {
         sort(godzilla.begin(), godzilla.end());
         sort(mecha.begin(), mecha.end());
         
-        while( !godzilla.empty() and !mecha.empty() )
+        int g_ind = 0;
+        int m_ind = 0;
+        
+        // пришлось отказаться от удаления элементов вектора пока он не опустеет
+        // о чем я думал это же медленно AS ****
+        // крч замутил систему индексования
+
+        while( g_ind < g and m_ind < m )
         {
             
-            if ( godzilla[0] < mecha[0] )
-                godzilla.erase(godzilla.begin());
+            if ( godzilla[g_ind] < mecha[m_ind] )
+                ++g_ind;
             else
-                mecha.erase(mecha.begin());
+                ++m_ind;
             
         }
-        if (godzilla.empty())
+        if (g_ind == g)
             cout << "MechaGodzilla\n";
-        else if (mecha.empty())
+        else if (m_ind == m)
             cout << "Godzilla\n";
         else
             cout << "uncertain\n";
