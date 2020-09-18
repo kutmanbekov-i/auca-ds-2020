@@ -8,12 +8,15 @@ using namespace std;
 int main() {
     
     ull t, p, r, f;
+    ld res;
+    
     cin >> t;
     
     while(t--)
     {
         cin >> p >> r >> f;
         
-        cout << ceil((ld)f / (p * r)) << "\n";
+        res = (ld)f / (p * r);
+        cout << (res < 1 ? f >= p ? 1 : 0 : ceil(res)) << "\n";
     }
 }
