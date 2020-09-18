@@ -6,7 +6,7 @@ int main() {
     
     int x, a, b, c, deg = 0;
     
-    while (cin >> x >> a >> b >> c)
+    while (cin >> x >> a >> b >> c)  
     {
         if (x == 0 and a == 0 and b == 0 and c == 0) break;
         
@@ -16,13 +16,13 @@ int main() {
         
         deg += 720;
         
-        deg += ( (40 - abs(a - x) % 40) * 9 );
+        deg += ( (x - a + 40) % 40 * 9 );
         
         deg += 360;
         
-        deg += ( (40 - abs(b - a) % 40) * 9 );
+        deg += ( (b - a + 40) % 40 * 9 );
         
-        deg += ( (40 - abs(c - b) % 40) * 9 );
+        deg += ( (b - c + 40) % 40 * 9 );
         
         cout << deg << "\n";
         deg = 0;
