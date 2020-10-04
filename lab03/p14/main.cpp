@@ -23,8 +23,9 @@ int main() {
         for (int i = 0; i < 8; ++i)
             for (int j = 0; j < 8; ++j)
             {
-                scanf(" %c", &board[i][j]);
-                if (board[i][j] != '.')
+                // scanf(" %c", &board[i][j]);
+                cin >> board[i][j];
+                if (board[i][j] != '.' or !board[i][j])
                     empty = false;
             }
         
@@ -56,14 +57,12 @@ int main() {
         else 
             printf("Game #%d: no king is in check.\n", t++);
 
-        // cin.ignore();
+        cin.ignore();
     }
 }
 
 bool check_HV(int team, int i, int j)
 {
-    bool udar = true; //unused
-
     char p, r, b, q, my_k, n;
 
     // black lost?
@@ -107,7 +106,6 @@ bool check_HV(int team, int i, int j)
             else
             {
                 if (king_met or enemy_met)
-                    udar = false;
                     break;
             }
         }
@@ -137,10 +135,7 @@ bool check_HV(int team, int i, int j)
             else
             {
                 if (king_met or enemy_met)
-                {
-                    udar = false;
                     break;
-                }
             }
         }
     }
@@ -166,9 +161,8 @@ bool check_DIAGONALS(int team, int i, int j)
         n = 'N';
         
         //checking for pawn
-        if (i < 6 and j < 6 and j > 0 and board[i + 1][j + 1] == p or board[i + 1][j - 1] == p)
+        if (i < 7 and j < 7 and j > 0 and board[i + 1][j + 1] == p or board[i + 1][j - 1] == p)
             return true;
-            
         
     } else {
         p = 'p';
@@ -179,7 +173,7 @@ bool check_DIAGONALS(int team, int i, int j)
         n = 'n';
         
         //checking for pawn
-        if ( i > 0 and j > 0 and j < 6 and board[i - 1][j + 1] == p or board[i - 1][j - 1] == p)
+        if ( i > 0 and j > 0 and j < 7 and board[i - 1][j + 1] == p or board[i - 1][j - 1] == p)
             return true;
     }
 
@@ -187,6 +181,7 @@ bool check_DIAGONALS(int team, int i, int j)
     int ki = i - t;
     int kj = j - t;
 
+    // down right
     for (; max(ki, kj) < 8; ++ki, ++kj)
     {
         if (board[ki][kj] == my_k) 
@@ -207,10 +202,7 @@ bool check_DIAGONALS(int team, int i, int j)
             else
             {
                 if (king_met or enemy_met)
-                {
-                    // udar = false;
                     break;
-                }
             }
         }
     }
@@ -220,17 +212,18 @@ bool check_DIAGONALS(int team, int i, int j)
 
     t = max(i, j);
 
-    if (i + j <= 7) {
+    if (i + j <= 7) { // above the secondary
         ki = 0;
         kj = i + j - ki;
-    } else {
-        kj = 0;
-        ki = i + j - kj;
+    } else {        // below
+        kj = 7;     //the bug must be here!
+        ki = i + j - kj; 
     }
 
     bool I = (ki != 0);
 
-    for (; ; )
+    // down left
+    for (; ;)
     {
         if (board[ki][kj] == my_k) 
         {
@@ -250,21 +243,18 @@ bool check_DIAGONALS(int team, int i, int j)
             else
             {
                 if (king_met or enemy_met)
-                {
-                    // udar = false;
                     break;
-                }
             }
         }
         if (I)
         {
             --ki;
             ++kj;
-            if (!ki) break;
+            if (ki == 0) break;
         } else {
             --kj;
             ++ki;
-            if (!kj) break;
+            if (kj == 0) break;
         }
     }
 
@@ -272,23 +262,63 @@ bool check_DIAGONALS(int team, int i, int j)
 }
 
 
-bool check_kon(int team, int i, int j)
+bool check_kon(int team, int y, int x)
 {
-    char my_k, n;
+    char n = team == 2 ? 'N' : 'n';
     
-    if (team == 2)
+    if (x - 2 >= 0)
     {
-        my_k = 'k';
-        n = 'N';
-    } else {
-        my_k == 'K';
-        n = 'n';
+        if (y - 1 >= 0 && board[y - 1][x - 2] == n)
+            return true;
+        
+        if (y + 1 < 8 && board[y + 1][x - 2] == n)
+            return true;
     }
     
-    if (board[i - 1][j - 2] == n or board[i - 2][j - 1] == n or board[i - 2][j + 1] == n or board[i - 1][j + 2] == n or
-        board[i + 1][j - 2] == n or board[i + 2][j - 1] == n or board[i + 2][j + 1] == n or board[i + 1][j + 2] == n)
+    if (x + 2 < 8)
     {
-        return true;
+        if (y - 1 >= 0 && board[y - 1][x + 2] == n)
+            return true;
+            
+        if (y + 1 < 8 && board[y + 1][x + 2] == n)
+            return true;
     }
+    
+    if (y - 2 >= 0)
+    {
+        if (x - 1 >= 0 && board[y - 2][x - 1] == n)
+            return true;
+        
+        if (x + 1 < 8 && board[y - 2][x + 1] == n)
+            return true;
+    }
+    
+    if (y + 2 < 8)
+    {
+        if (x - 1 >= 0 && board[y + 2][x - 1] == n)
+            return true;
+            
+        if (x + 1 < 8 && board[y + 2][x + 1] == n)
+            return true;
+    }
+    
     return false;
+    
+    // char my_k, n;
+    
+    // if (team == 2)
+    // {
+    //     my_k = 'k';
+    //     n = 'N';
+    // } else {
+    //     my_k == 'K';
+    //     n = 'n';
+    // }
+    
+    // if (board[i - 1][j - 2] == n or board[i - 2][j - 1] == n or board[i - 2][j + 1] == n or board[i - 1][j + 2] == n or
+    //     board[i + 1][j - 2] == n or board[i + 2][j - 1] == n or board[i + 2][j + 1] == n or board[i + 1][j + 2] == n)
+    // {
+    //     return true;
+    // }
+    // return false;
 }
