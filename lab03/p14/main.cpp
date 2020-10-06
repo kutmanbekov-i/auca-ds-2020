@@ -3,14 +3,13 @@
 using namespace std;
 
 char board[12][12];
+pair<int, int> white, black;
 
-bool check_king(pair<int, int> &king, int shift);
+bool check_king(pair<int, int> king, int shift);
 
 int main() {
     
     bool empty = false;
-    
-    pair<int, int> white, black;
 
     int t = 1;
     
@@ -26,7 +25,7 @@ int main() {
             for (int j = 2; j < 10; ++j)
             {
                 scanf(" %c", &board[i][j]);
-                // cin >> board[i][j];
+
                 if (board[i][j] != '.')
                     empty = false;
                 
@@ -55,13 +54,12 @@ int main() {
             printf("Game #%d: white king is in check.\n", t++);
         else 
             printf("Game #%d: no king is in check.\n", t++);
-
-        // cin.ignore();  
+                
     }
 }
 
 
-bool check_king(pair<int, int> &king, int shift)
+bool check_king(pair<int, int> king, int shift)
 {
     //enemy figures
     char pawn = char('P' + shift);
@@ -170,13 +168,18 @@ bool check_king(pair<int, int> &king, int shift)
     int i = king.first, j = king.second;
     
     //pawns
-    if (shift == 32)
-        if (board[i - 1][j - 1] == pawn or board[i - 1][j + 1] == pawn)
-            return true;
-    if (shift == 0)
-        if (board[i + 1][j + 1] == pawn or board[i + 1][j - 1] == pawn)
-            return true;
+    if (shift == 32 and (board[i - 1][j + 1] == pawn or board[i - 1][j - 1] == pawn) )
+        return true;
+    if(shift == 0 and (board[i + 1][j + 1] == pawn or board[i + 1][j - 1] == pawn) )
+        return true;
 
+    // if (shift == 32)
+    //     if (board[i - 1][j - 1] == pawn or board[i - 1][j + 1] == pawn)
+    //         return true;
+    // if (shift == 0)
+    //     if (board[i + 1][j + 1] == pawn or board[i + 1][j - 1] == pawn)
+    //         return true;
+        
     //knights
     if (board[i - 2][j - 1] == knight or board[i - 1][j - 2] == knight or board[i + 1][j - 2] == knight or board[i + 2][j - 1] == knight or
         board[i + 2][j + 1] == knight or board[i + 1][j + 2] == knight or board[i - 1][j + 2] == knight or board[i - 2][j + 1] == knight)
