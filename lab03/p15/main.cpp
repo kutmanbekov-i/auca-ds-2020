@@ -8,6 +8,8 @@ void parse(string s);
 void printt(char board[12][12]);
 
 bool square_attacked(int i, int j, int shift);
+//когда решил две предыдущие, эта кажется тривиальной ведь ты просто меняешь имена индексов
+// О И ЕЩЕ КОРОЛЯ НАДО ПРОВЕРИТЬ!!!
 
 int main() {
     
@@ -187,6 +189,11 @@ bool square_attacked(int i, int j, int shift)
     //knights
     if (board[i - 2][j - 1] == knight or board[i - 1][j - 2] == knight or board[i + 1][j - 2] == knight or board[i + 2][j - 1] == knight or
         board[i + 2][j + 1] == knight or board[i + 1][j + 2] == knight or board[i - 1][j + 2] == knight or board[i - 2][j + 1] == knight)
+        return true;
+        
+    //I FORGOT TO CHECK THE KINGS
+    if (board[i - 1][j] == king or board[i - 1][j + 1] == king or board[i][j + 1] == king or board[i + 1][j + 1] == king or
+        board[i + 1][j] == king or board[i + 1][j - 1] == king or board[i][j - 1] == king or board[i - 1][j - 1] == king)
         return true;
         
     return false;
