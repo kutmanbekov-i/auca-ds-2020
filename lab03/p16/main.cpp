@@ -11,13 +11,14 @@ int x[] = { -1, 0, 1, 1, 1, 0, -1, -1 };
 int main() {
     
     
-    int t;
+    int t; bool line = false;
     
     scanf("%d", &t);
     
     while (t--)
     {
-
+        if (line) printf("\n");
+        line = true;
         int n;
         
         scanf("%d", &n);
@@ -45,7 +46,7 @@ int main() {
             
         represent(grid, mines);
         printt(grid);
-        printf("\n");
+
     }
 }
 
