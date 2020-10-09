@@ -25,26 +25,25 @@ int main() {
             percents[num] = percent;
         }
         
-        double temp = 0;
+        double temp = percents[0];
+        double aver = amount / month;
+        new_amount -= (new_amount * percents[0]);
         
-        for (int i = 0; i < month; ++i)
+        while (amount > new_amount)
         {
-            
-            if (percents[i] != 0)
+            ++cnt;
+            if (percents[cnt] != 0)
             {
-                new_amount = new_amount - (new_amount * percents[i]);
-                temp = percents[i];
+                new_amount = new_amount - (new_amount * percents[cnt]);
+                temp = percents[cnt];
             }
             else
             {
                 new_amount = new_amount - (new_amount * temp);
+                // new_amount = new_amount * (1 - percents[cnt]);
             }
             
-            amount -= 500;
-            cnt++;
-
-            if(amount < new_amount) 
-                break;
+            amount -= aver;
         }
         
         cout << cnt << " month" << (cnt == 1 ? "\n" : "s\n");
