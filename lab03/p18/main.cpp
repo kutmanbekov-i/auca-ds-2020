@@ -78,6 +78,7 @@ int main() {
         if (!line)
         {
             getline(cin, s);
+            getline(cin, s);
         }
         
         for (int i = 0; getline(cin, instr[i]); ++i )
