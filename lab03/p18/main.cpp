@@ -64,7 +64,8 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     
-    int t; cin >> t; bool first = true;
+    int t; cin >> t;
+    bool line = false;
     
     while (t--)
     {
@@ -74,9 +75,8 @@ int main() {
         vector<int> reg(10);
         vector<string> instr(1000);
         
-        if (first)
+        if (!line)
         {
-            getline(cin, s);
             getline(cin, s);
         }
         
@@ -86,12 +86,12 @@ int main() {
             ram[i] = stoi(instr[i]);
 
         }
-
+        if (line)
+            cout << "\n";
+        line = true;
         // cout << ram[10] << "\n";
         
         decode(ram, reg);
-        cout << "\n";
-        first = false;
     }
     
 }
