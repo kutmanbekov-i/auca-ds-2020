@@ -160,5 +160,5 @@ int main() {
         }   
 
     }
-    cout << w << '\n';
+    cout << w;
 }
