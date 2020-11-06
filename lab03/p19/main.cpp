@@ -2,37 +2,47 @@
 
 using namespace std;
 
-vector<int> parse(string line)
+void eliminate(vector<vector<int>> &votes, int ind, int n)
 {
-    vector<int> temp;
-    for (int i = 0; i < line.length(); ++i)
-    {
-        if (isdigit(line[i]))
-        {
-            temp.push_back(line[i] - '0');
-        } else continue;
-    }
-    return temp;
+    for (int i = 0; i < votes.size(); i++)
+        for (int j = 0; j < n; j++)
+            if (votes[i][j] == ind + 1)
+                votes[i][j] = 0;
+
+}
+void rearrange(vector<vector<int>> &votes, int n)
+{
+    for (int i = 0; i < votes.size(); i++)
+        if (votes[i][0] == 0)
+            for (int j = 1; j < n; j++)
+                if (votes[i][j] != 0)
+                {
+                    votes[i][0] = votes[i][j];
+                    break;
+                }
 }
 
 int main()
 {
-    int t; cin >> t;
+    int t;
+    cin >> t;
     bool new_line = false;
 
-    while (t--) {
+    while (t--)
+    {
 
-        int n; cin >> n;
+        int n, voters = 0;
+        cin >> n;
         string s;
-        vector<string> candidates(n + 1);
-        vector<vector<int>> votes;
+        vector<string> candidates(n);
+        vector<vector<int>> votes(1000, vector<int>(20, 0));
 
-        if (!new_line)
-        {
-            getline(cin, s);
-        }
+        // if (!new_line)
+        // {
+        getline(cin, s);
+        // }
 
-        for(int i = 1; i <= n; ++i)
+        for (int i = 0; i < n; ++i)
         {
             getline(cin, s);
             candidates[i] = s;
@@ -40,62 +50,60 @@ int main()
 
         string line;
 
-        while (getline(cin, line))
+        while (getline(cin, line) and line != "")
         {
-            // pass
-            if (line.length() == 0) break;
-
-            votes.push_back( parse(line) );
+            istringstream sinp(line);
+            for (int i = 0; i < n; i++)
+            {
+                sinp >> votes[voters][i];
+            }
+            voters++;
         }
 
-        vector <int> indexes(votes.size(), 0);
-        vector <bool> kicked(21, false);
-        
+        vector<bool> kicked(n, false);
+
         while (true)
         {
-            vector <int> points(21, 0);
-            
-            int x = 0;
-            
-            for (int i = 0; i < votes.size(); ++i)
+            vector<int> points(n, 0);
+
+            for (int i = 0; i < voters; ++i)
             {
-                while (indexes[i] < n and kicked[ votes[i][ indexes[i] ] ])
-                {
-                    indexes[i]++;
-                }
-                if (indexes[i] < n)
-                {
-                    points[ votes[i][indexes[i]] ]++;
-                    ++x;
-                }
-                
+                points[ votes[i][0] - 1 ]++;
             }
-            
-            int half = x / 2 + x % 2;
+
+            int half = voters / 2;
             int maxim = -1, minim = INT_MAX;
-            
-            for (int i = 1; i <= n; ++i)
+
+            for (int i = 0; i < n; ++i)
             {
                 if (!kicked[i])
                 {
                     maxim = max(maxim, points[i]);
-                    if (points[i] < minim)
-                        minim = points[i];
+                    minim = min(minim, points[i]);
                 }
             }
-            
-            if (maxim == minim or maxim >= half)
+
+            if (maxim > half or maxim == minim)
             {
-                for (int i = 1; i <= n; ++i)
+                for (int i = 0; i < n; ++i)
                     if (points[i] == maxim)
                         cout << candidates[i] << '\n';
                 break;
+            } else
+            {
+                for (int i = 0; i < n; ++i)
+                {
+                    if (points[i] == minim)
+                    {
+                        eliminate(votes, i, n);
+                        
+                        kicked[i] = true;
+                    }
+                }
+                rearrange(votes, n);
             }
-            for (int i = 1; i <= n; ++i)
-                if (points[i] == minim)
-                    kicked[i] = true;
         }
-        
+
         if (t)
             cout << "\n";
     }
