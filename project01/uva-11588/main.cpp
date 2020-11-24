@@ -43,10 +43,10 @@ int main() {
                 break;
             }
         }
-        file_size = (max_cnt * maxim) * m + (r * c - maxim) * n;
-
-        cout << "Case " << test << ": " << file_size << '\n';
         
+        file_size = (max_cnt * maxim) * m + (r * c - (maxim * max_cnt)) * n;
+
+        cout << "Case " << test++ << ": " << file_size << '\n';
     }
     
 }
