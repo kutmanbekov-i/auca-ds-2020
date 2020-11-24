@@ -32,17 +32,16 @@ int main() {
 
 bool compare(const int a, const int b)
 {
-    if (a % m == b % m)
+    if (a % m != b % m)
+        return a % m < b % m;
+        
+    if (a % 2 != 0)
     {
-        if (a % 2 == 0 and b % 2 == 0)
-        {
-            return a < b;
-        }
-        if (a % 2 == 1 and b % 2 == 1)
-        {
+        if(b % 2 != 0)
             return a > b;
-        }
-        return (a % 2 == 1 and b % 2 == 0);
+        return true;
     }
-    return a % m < b % m;
+    if (b % 2 != 0)
+        return false;
+    return a < b;
 }
