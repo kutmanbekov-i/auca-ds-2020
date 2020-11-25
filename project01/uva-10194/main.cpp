@@ -12,6 +12,7 @@ struct Team
     int loses;
     int goals_scored;
     int goals_conceded;
+    int difference;
 };
 
 bool compare(Team a, Team b)
@@ -20,8 +21,8 @@ bool compare(Team a, Team b)
         return a.points > b.points;
     if (a.wins != b.wins)
         return a.wins > b.wins;
-    if (a.goals_scored - a.goals_conceded != b.goals_scored - b.goals_conceded)
-        return a.goals_scored - a.goals_conceded > b.goals_scored - b.goals_conceded;
+    if (a.difference != b.difference)
+        return a.difference > b.difference;
     if (a.games_played != b.games_played)
         return a.games_played < b.games_played;
     return a.name < b.name;
@@ -51,6 +52,7 @@ void result(const string &game_result, vector<Team> &teams)
             teams[i].loses += (winner == 2 ? 1 : 0);
             teams[i].goals_scored += a_scored;
             teams[i].goals_conceded += b_scored;
+            teams[i].difference += (a_scored - b_scored);
         }
         else if (teams[i].name == team_b)
         {
@@ -61,13 +63,13 @@ void result(const string &game_result, vector<Team> &teams)
             teams[i].loses += (winner == 1 ? 1 : 0);
             teams[i].goals_scored += b_scored;
             teams[i].goals_conceded += a_scored;
+            teams[i].difference += (b_scored - a_scored);
         }
     }
 }
 
 int main()
 {
-
     // ios_base::sync_with_stdio(false);
     // cin.tie(NULL);
     
@@ -118,8 +120,8 @@ int main()
         cout << tournament << '\n';
         for (int i = 0; i < n; ++i)
         {
-            cout << i + 1 << ") " << teams[i].name << " ";      // printf is not type safe when using strings
-            printf("%dp, %dg (%d-%d-%d), %dg (%d-%d)\n", teams[i].points, teams[i].games_played, teams[i].wins, teams[i].draws, teams[i].loses, teams[i].goals_scored - teams[i].goals_conceded, teams[i].goals_scored, teams[i].goals_conceded);
+            cout << i + 1 << ") " << teams[i].name << " ";
+            printf("%dp, %dg (%d-%d-%d), %dgd (%d-%d)\n", teams[i].points, teams[i].games_played, teams[i].wins, teams[i].draws, teams[i].loses, teams[i].difference, teams[i].goals_scored, teams[i].goals_conceded);
         }
     }
 }
