@@ -15,6 +15,19 @@ struct Team
     int difference;
 };
 
+int str_compare(const string &a, const string &b)
+{
+    string a_name;
+    for (int i = 0; i < a.length(); ++i)
+        a_name += toupper(a[i]);
+    string b_name;
+    for (int i = 0; i < b.length(); ++i)
+        b_name += toupper(b[i]);
+    if (a_name > b_name) return 1;
+    if (a_name < b_name) return -1;
+    return 0;
+}
+
 bool compare(Team a, Team b)
 {
     if (a.points != b.points)
@@ -23,9 +36,11 @@ bool compare(Team a, Team b)
         return a.wins > b.wins;
     if (a.difference != b.difference)
         return a.difference > b.difference;
+    if (a.goals_scored != b.goals_scored)
+        return a.goals_scored > b.goals_scored;
     if (a.games_played != b.games_played)
         return a.games_played < b.games_played;
-    return a.name < b.name;
+    return str_compare(a.name, b.name) < 0;
 }
 
 void result(const string &game_result, vector<Team> &teams)
@@ -70,9 +85,7 @@ void result(const string &game_result, vector<Team> &teams)
 
 int main()
 {
-    // ios_base::sync_with_stdio(false);
-    // cin.tie(NULL);
-    
+
     string s;
     getline(cin, s);
     
@@ -82,7 +95,8 @@ int main()
     
     while (N--)
     {
-        if (line) cout << '\n';
+        if (line) 
+            cout << '\n';
         line = true;
         
         string tournament;
