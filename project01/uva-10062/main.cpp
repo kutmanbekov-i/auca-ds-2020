@@ -23,8 +23,14 @@ int main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
+    bool line = false;
+
     for (string s; getline(cin, s);)
     {
+        if (line)
+            cout << '\n';
+        line = true;
+        
         vector<int> freq(96);
         for(int i = 0; i < s.length(); ++i)
         {
@@ -58,6 +64,5 @@ int main()
         {
             cout << p.ascii << " " << p.value << '\n';
         }
-        cout << '\n';
     }
 }
