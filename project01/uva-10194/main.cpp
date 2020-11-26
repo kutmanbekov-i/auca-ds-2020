@@ -5,6 +5,7 @@ using namespace std;
 struct Team
 {
     string name;
+    string name_ignoreCase;
     int games_played;
     int points;
     int wins;
@@ -13,20 +14,9 @@ struct Team
     int goals_scored;
     int goals_conceded;
     int difference;
+    
+    Team(): games_played(0), points(0), wins(0), draws(0), loses(0), goals_scored(0), goals_conceded(0), difference(0) {}
 };
-
-int str_compare(const string &a, const string &b)
-{
-    string a_name;
-    for (int i = 0; i < a.length(); ++i)
-        a_name += toupper(a[i]);
-    string b_name;
-    for (int i = 0; i < b.length(); ++i)
-        b_name += toupper(b[i]);
-    if (a_name > b_name) return 1;
-    if (a_name < b_name) return -1;
-    return 0;
-}
 
 bool compare(Team a, Team b)
 {
@@ -40,47 +30,25 @@ bool compare(Team a, Team b)
         return a.goals_scored > b.goals_scored;
     if (a.games_played != b.games_played)
         return a.games_played < b.games_played;
-    return str_compare(a.name, b.name) < 0;
+    return a.name_ignoreCase < b.name_ignoreCase;
 }
 
-void result(const string &game_result, vector<Team> &teams)
+void update_results(vector<Team> &teams, const string &team_name, const int a, const int b)
 {
-    auto it = find(game_result.begin(), game_result.end(), '@');
-    int ind = it - game_result.begin();
-    
-    string team_a = game_result.substr(0, ind - 2);
-    string team_b = game_result.substr(ind + 3);
-    
-    int a_scored = game_result[ind - 1] - '0';
-    int b_scored = game_result[ind + 1] - '0';
-    
-    int winner = (a_scored > b_scored ? 1 : (a_scored < b_scored ? 2 : 0));
-    
+    int ind;
     for (size_t i = 0; i < teams.size(); ++i)
-    {
-        if (teams[i].name == team_a)
-        {
-            teams[i].games_played++;
-            teams[i].points += (winner == 1 ? 3 : (winner == 0 ? 1 : 0));
-            teams[i].wins += (winner == 1 ? 1 : 0);
-            teams[i].draws += (winner == 0 ? 1 : 0);
-            teams[i].loses += (winner == 2 ? 1 : 0);
-            teams[i].goals_scored += a_scored;
-            teams[i].goals_conceded += b_scored;
-            teams[i].difference += (a_scored - b_scored);
-        }
-        else if (teams[i].name == team_b)
-        {
-            teams[i].games_played++;
-            teams[i].points += (winner == 2 ? 3 : (winner == 0 ? 1 : 0));
-            teams[i].wins += (winner == 2 ? 1 : 0);
-            teams[i].draws += (winner == 0 ? 1 : 0);
-            teams[i].loses += (winner == 1 ? 1 : 0);
-            teams[i].goals_scored += b_scored;
-            teams[i].goals_conceded += a_scored;
-            teams[i].difference += (b_scored - a_scored);
-        }
-    }
+        if (teams[i].name == team_name)
+            ind = i;
+    
+    teams[ind].games_played++;
+    teams[ind].points += (a > b ? 3 : (a == b ? 1 : 0));
+    teams[ind].wins += (a > b ? 1 : 0);
+    teams[ind].draws += (a == b ? 1 : 0);
+    teams[ind].loses += (a < b ? 1 : 0);
+    teams[ind].goals_scored += a;
+    teams[ind].goals_conceded += b;
+    teams[ind].difference += (a - b);
+
 }
 
 int main()
@@ -88,54 +56,63 @@ int main()
 
     string s;
     getline(cin, s);
-    
+
     int N = stoi(s);
-    
-    bool line = false;
-    
+
     while (N--)
     {
-        if (line) 
-            cout << '\n';
-        line = true;
-        
         string tournament;
         getline(cin, tournament);
 
         int n;
         cin >> n;
-        
+
         vector<Team> teams(n);
-        
+
         string team;
         getline(cin, team);
-                    
+
         for (int i = 0; i < n; ++i)
         {
             getline(cin, team);
             teams[i].name = team;
+
+            transform(team.begin(), team.end(), team.begin(), ::toupper);
+            teams[i].name_ignoreCase = team;
         }
-        
+
         int g;
         cin >> g;
+
+        string team_a, team_b;
+        int a, b;
         
-        string game_result;
-        getline(cin, game_result);
-        
+        getline(cin, team_a);
+
         for (int i = 0; i < g; ++i)
         {
-            getline(cin, game_result);
+            getline(cin, team_a, '#');
+            cin >> a;
+            cin.ignore(10, '@');
             
-            result(game_result, teams);
+            cin >> b;
+            cin.ignore(10, '#');
+            
+            getline(cin, team_b);
+            
+
+            update_results(teams, team_a, a, b);
+            update_results(teams, team_b, b, a);
         }
-        
+
         sort(teams.begin(), teams.end(), compare);
-        
+
         cout << tournament << '\n';
         for (int i = 0; i < n; ++i)
         {
-            cout << i + 1 << ") " << teams[i].name << " ";
-            printf("%dp, %dg (%d-%d-%d), %dgd (%d-%d)\n", teams[i].points, teams[i].games_played, teams[i].wins, teams[i].draws, teams[i].loses, teams[i].difference, teams[i].goals_scored, teams[i].goals_conceded);
+            cout << i + 1 << ") " << teams[i].name << " " << teams[i].points << "p, " << teams[i].games_played << "g (" << teams[i].wins << "-" << teams[i].draws << "-" << teams[i].loses << "), " << teams[i].difference << "gd (" << teams[i].goals_scored << "-" << teams[i].goals_conceded << ")\n";
         }
+        if (N)
+            cout << '\n';
     }
 }
