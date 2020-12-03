@@ -70,6 +70,6 @@ int main() {
             cout << data[i].first.substr(0, data[i].first.length() - 1) << '\n';
         }
         
-        if (t) cout << "==============================\n";
+        cout << "==============================\n";
     }
 }
