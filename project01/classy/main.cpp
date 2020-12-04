@@ -43,7 +43,7 @@ int main() {
         
         int n; cin >> n;
         
-        vector<pair<string, string>> data(n);
+        vector<pair<string, string>> data;
         
         for (int i = 0; i < n; ++i)
         {
@@ -53,7 +53,7 @@ int main() {
             
             parse(rank, parsed);
             
-            data[i] = {name, parsed};
+            data.emplace_back(name, parsed);
         }
         
         sort(data.begin(), data.end(), []( pair<string, string> a, pair<string, string> b )
@@ -67,7 +67,8 @@ int main() {
         
         for (int i = 0; i < n; ++i)
         {
-            cout << data[i].first.substr(0, data[i].first.length() - 1) << '\n';
+            int len = data[i].first.length();
+            cout << data[i].first.substr(0, len - 1) << '\n';
         }
         
         cout << "==============================\n";
