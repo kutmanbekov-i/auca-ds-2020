@@ -37,13 +37,12 @@ class PokerHand
     void count_cards()
     {
         for (int i = 0; i < 5; ++i)
-        {
             count[hand[i].first]++;
-        }
+            
     }
     bool is_straight_flush() const
     {
-        return (is_straight() && is_flush());
+        return is_straight() and is_flush();
     }
     bool is_four_of_a_kind() const
     {
@@ -70,14 +69,14 @@ class PokerHand
     bool is_flush() const
     {
         for (int i = 1; i < 5; ++i)
-            if (hand[i - 1].second != hand[i].second)
+            if (hand[i].second != hand[i - 1].second)
                 return false;
         return true;
     }
     bool is_straight() const
     {
         for (int i = 1; i < 5; ++i)
-            if (hand[i - 1].first != (hand[i].first - 1))
+            if (hand[i].first != hand[i - 1].first - 1)
                 return false;
         return true;
     }
@@ -140,6 +139,7 @@ public:
     {
         if (a.is_straight_flush())
         {
+            // cout << " WAAAT ";
             if (b.is_straight_flush())
             {
                 if (a.hand[0].first > b.hand[0].first) return 1;
@@ -148,31 +148,35 @@ public:
             }
             return 1;
         }
-        if (b.is_straight_flush()) return -1;
+        if (b.is_straight_flush())
+        {
+            return -1;
+        }
+        // cout << "comparison skipped... ";
 
         if (a.is_four_of_a_kind())
         {
             if (b.is_four_of_a_kind())
             {
-                if (a.hand[2].first > b.hand[2].first)
-                    return 1;
+                if (a.hand[2].first > b.hand[2].first) return 1;
                 return -1;
             }
             return 1;
         }
-        if (b.is_four_of_a_kind()) return -1;
+        if (b.is_four_of_a_kind())
+            return -1;
 
         if (a.is_full_house())
         {
             if (b.is_full_house())
             {
-                if (a.hand[2].first > b.hand[2].first)
-                    return 1;
-                return -1;    
+                if (a.hand[2].first > b.hand[2].first) return 1;
+                return -1;
             }
             return 1;
         }
-        if (b.is_full_house()) return -1;
+        if (b.is_full_house())
+            return -1;
 
         if (a.is_flush())
         {
@@ -209,7 +213,8 @@ public:
             }
             return 1;
         }
-        if (b.is_three_of_a_kind()) return -1;
+        if (b.is_three_of_a_kind())
+            return -1;
 
         if (a.is_two_pairs())
         {
@@ -239,11 +244,14 @@ public:
             {
                 if (a.value_of_pair() > b.value_of_pair()) return 1;
                 if (a.value_of_pair() < b.value_of_pair()) return -1;
+                
                 for (int i = 0; i < 5; ++i)
                 {
-                    if (a.hand[i].first > b.hand[i].first) return 1;
-                    if (a.hand[i].first < b.hand[i].first) return -1;
-                 
+                    if (a.hand[i].first != a.value_of_pair() and b.hand[i].first != b.value_of_pair())
+                    {
+                        if (a.hand[i].first > b.hand[i].first) return 1;
+                        if (a.hand[i].first < b.hand[i].first) return -1;
+                    }
                 }
                 return 0;
             }
@@ -251,12 +259,13 @@ public:
         }
         if (b.is_pair()) return -1;
 
+        // checking for a highcard
         for (int i = 0; i < 5; ++i)
         {
             if (a.hand[i].first > b.hand[i].first) return 1;
             if (a.hand[i].first < b.hand[i].first) return -1;
         }
-
+        return 0;
     }
 };
 
@@ -266,6 +275,7 @@ int main()
 
     for (string line; getline(cin, line);)
     {
+        if (line == "") break;
         istringstream sinp(line);
 
         vector<string> white;
