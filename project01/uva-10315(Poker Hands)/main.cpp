@@ -124,6 +124,15 @@ class PokerHand
                     return v;
         return 0;
     }
+    vector<int> kickers() const
+    {
+        vector<int> temp;
+        if (is_pair())
+            for (int v = 14; v >= 2; --v)
+                if (count[v] == 1)
+                    temp.push_back(v);
+        return temp;
+    }
 
 public:
     PokerHand(vector<string> cards)
@@ -244,13 +253,12 @@ public:
             {
                 if (a.value_of_pair() > b.value_of_pair()) return 1;
                 if (a.value_of_pair() < b.value_of_pair()) return -1;
-                
-                for (int i = 0; i < 5; ++i)
+                if (a.value_of_pair() == b.value_of_pair())
                 {
-                    if (a.hand[i].first != a.value_of_pair() and b.hand[i].first != b.value_of_pair())
+                    for (int i = 0; i < 3; ++i)
                     {
-                        if (a.hand[i].first > b.hand[i].first) return 1;
-                        if (a.hand[i].first < b.hand[i].first) return -1;
+                        if (a.kickers()[i] > b.kickers()[i]) return 1;
+                        if (a.kickers()[i] < b.kickers()[i]) return -1;
                     }
                 }
                 return 0;
