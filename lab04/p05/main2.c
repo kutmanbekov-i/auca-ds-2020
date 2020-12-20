@@ -42,7 +42,7 @@ int main()
         a[sz++] = x;
     }
 
-    printArray(a, a + sz);
+    printArray(a, sz);
     reverseArray(a, sz);
     printArray(a, sz);
 
