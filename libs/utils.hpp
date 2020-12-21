@@ -94,7 +94,8 @@ void auSelection_sort(Iter beg, Iter end, Predicate p)
 {
     for (Iter it = beg; it != end; ++it)
     {
-        auSwap(*it, *auMin_element(beg, end, p));
+        Iter iterToMin = auMin_element(it, end, p);
+        auSwap(*it, *iterToMin);
     }
 }
 
@@ -104,6 +105,18 @@ void auInsertion_sort(Iter beg, Iter end)
     for (Iter cur = beg; cur != end; ++cur)
     {
         for (Iter it = cur, it2 = cur; it != beg && *it2 < *(--it); --it2)
+        {
+            auSwap(*it, *it2);
+        }
+    }
+}
+
+template <typename Iter, typename Predicate>
+void auInsertion_sort(Iter beg, Iter end, Predicate p)
+{
+    for (Iter cur = beg; cur != end; ++cur)
+    {
+        for (Iter it = cur, it2 = cur; it != beg and p(*it2, *(--it)); --it2)
         {
             auSwap(*it, *it2);
         }
