@@ -141,6 +141,13 @@ Iter auLower_bound(Iter beg, Iter end, const T &k)
     return beg;
 }
 
+template <typename Iter, typename T>
+bool auBinary_search(Iter beg, Iter end, T &k)
+{
+    Iter it = auLower_bound(beg, end, k);
+    return !(it == end) && !(k < *it);
+}
+
 template <typename Iter>
 void auReverse(Iter beg, Iter end)
 {
