@@ -1,12 +1,15 @@
 #include <iostream>
 #include "VecInt.hpp"
 #include "../libs/utils.hpp"
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
-void printVector(VecInt &v)
+template<typename Container>
+void print(const Container &v)
 {
-    for (int e : v)
+    for (auto e : v)
         cout << e << " ";
     cout << "\n";
 }
@@ -30,11 +33,11 @@ void problem0101()
 
     v.pushBack(42);
 
-    printVector(v);
+    print(v);
 
     auReverse(v.begin(), v.end());
 
-    printVector(v);
+    print(v);
 }
 
 void problem0102()
@@ -46,11 +49,11 @@ void problem0102()
     {
         v.pushBack(x);
     }
-    printVector(v);
+    print(v);
 
     auReverse(v.begin(), v.end());
 
-    printVector(v);
+    print(v);
 }
 
 void problem0201()
@@ -86,14 +89,100 @@ void problem0202()
 
     cout << "Number of integer assignments: " << VecInt::counter << endl;
 
-    printVector(a);
-    printVector(b);
+    print(a);
+    print(b);
+}
+
+void problem0301()
+{
+    vector<int> v;
+    for (int x; cin >> x;)
+    {
+        v.push_back(x);
+    }
+
+    print(v);
+
+    for (auto p = v.begin(); p != v.end(); ++p)
+    {
+        if (*p % 2 == 0)
+        {
+            p = v.insert(p, 0);
+            ++p;
+        }
+        // ++p;
+    }
+    print(v);
+
+    // for (auto p = v.begin(); p != v.end();)
+    // {
+    //     if (*p % 2 == 0)
+    //     {
+    //         p = v.erase(p);
+    //     }
+    //     else
+    //     {
+    //         ++p;
+    //     }
+    // }
+    // print(v);
+
+    // the following code is the same, but more efficient
+
+    auto newEnd = remove_if(v.begin(), v.end(), [](int e) { return e % 2 == 0; });
+
+    v.erase(newEnd, v.end());
+
+    print(v);
+
+
+}
+
+void problem0302()
+{
+    VecInt v;
+    for (int x; cin >> x;)
+    {
+        v.pushBack(x);
+    }
+
+    print(v);
+
+    for (auto p = v.begin(); p != v.end(); ++p)
+    {
+        if (*p % 2 == 0)
+        {
+            p = v.insert(p, 0);
+            ++p;
+        }
+        // ++p;
+    }
+    print(v);
+
+    // for (auto p = v.begin(); p != v.end();)
+    // {
+    //     if (*p % 2 == 0)
+    //     {
+    //         p = v.erase(p);
+    //     }
+    //     else
+    //     {
+    //         ++p;
+    //     }
+    // }
+    // print(v);
+
+    auto newEnd = remove_if(v.begin(), v.end(), [](int e) { return e % 2 == 0; });
+
+    v.erase(newEnd, v.end());
+
+    print(v);
 }
 
 int main()
 try
 {
-    problem0202();
+    problem0302();
 
     //  g++ -o main *.cpp
 }

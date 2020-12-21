@@ -58,6 +58,11 @@ public:
 
     ~VecInt();
 
+    void reserve(size_t newCp);
+    int* insert(int *pos, int x);
+    int* erase(int *pos);
+    int* erase(int *beg, int *end);
+
     int *begin() const
     {
         return p;
