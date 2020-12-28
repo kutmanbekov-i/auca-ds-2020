@@ -127,13 +127,9 @@ class PokerHand
     vector<int> kickers() const
     {
         vector<int> temp;
-        if (is_pair() or is_three_of_a_kind() or is_four_of_a_kind())
+        if (is_pair())
             for (int v = 14; v >= 2; --v)
                 if (count[v] == 1)
-                    temp.push_back(v);
-        if (is_full_house())
-            for (int v = 14; v >= 2; --v)
-                if (count[v] == 2)
                     temp.push_back(v);
         return temp;
     }
@@ -172,16 +168,7 @@ public:
             if (b.is_four_of_a_kind())
             {
                 if (a.hand[2].first > b.hand[2].first) return 1;
-                if (a.hand[2].first < b.hand[2].first) return -1;
-                if (a.hand[2].first == b.hand[2].first)
-                {
-                    for (int i = 0; i < a.kickers().size(); ++i)
-                    {
-                        if (a.kickers()[i] > b.kickers()[i]) return 1;
-                        if (a.kickers()[i] < b.kickers()[i]) return -1;
-                    }  
-                    return 0; 
-                }
+                return -1;
             }
             return 1;
         }
@@ -193,16 +180,7 @@ public:
             if (b.is_full_house())
             {
                 if (a.hand[2].first > b.hand[2].first) return 1;
-                if (a.hand[2].first < b.hand[2].first) return -1;
-                if (a.hand[2].first == b.hand[2].first)
-                {
-                    for (int i = 0; i < a.kickers().size(); ++i)
-                    {
-                        if (a.kickers()[i] > b.kickers()[i]) return 1;
-                        if (a.kickers()[i] < b.kickers()[i]) return -1;
-                    }  
-                    return 0; 
-                }
+                return -1;
             }
             return 1;
         }
@@ -241,16 +219,7 @@ public:
             if (b.is_three_of_a_kind())
             {
                 if (a.hand[2].first > b.hand[2].first) return 1;
-                if (a.hand[2].first < b.hand[2].first) return -1;
-                if (a.hand[2].first == b.hand[2].first)
-                {
-                    for (int i = 0; i < a.kickers().size(); ++i)
-                    {
-                        if (a.kickers()[i] > b.kickers()[i]) return 1;
-                        if (a.kickers()[i] < b.kickers()[i]) return -1;
-                    }
-                    return 0;
-                }
+                return -1;
             }
             return 1;
         }
